@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayingCards", "PlayingCards\PlayingCards.csproj", "{F2C2B568-C512-48E1-B92A-E81DB72843D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardLib", "..\CardLib\CardLib.csproj", "{4BE3860C-7006-4765-B605-9EB954F8230B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2C2B568-C512-48E1-B92A-E81DB72843D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C2B568-C512-48E1-B92A-E81DB72843D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C2B568-C512-48E1-B92A-E81DB72843D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C2B568-C512-48E1-B92A-E81DB72843D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE3860C-7006-4765-B605-9EB954F8230B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE3860C-7006-4765-B605-9EB954F8230B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE3860C-7006-4765-B605-9EB954F8230B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE3860C-7006-4765-B605-9EB954F8230B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

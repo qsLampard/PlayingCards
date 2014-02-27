@@ -1,0 +1,71 @@
+﻿<Window x:Class="PlayingCards.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:src="clr-namespace:PlayingCards"
+        Title="Fight With Landlord" Height="660" Width="1025" Icon="Images/icon1.png" WindowState="Maximized" >
+    <Window.DataContext >
+        <src:GameViewModel />
+    </Window.DataContext>
+    <Window.CommandBindings>
+        <CommandBinding Command="src:GameViewModel.StartGameCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="ApplicationCommands.Close" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="ApplicationCommands.Save" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+    </Window.CommandBindings>
+    <Grid Background="CadetBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition />
+            <RowDefinition Height="42"/>
+        </Grid.RowDefinitions>
+        
+        <Canvas Grid.Row="0" Background="#000000">
+            <Image Height="56" Canvas.Left="0" Canvas.Top="0" Stretch="UniformToFill" Source=".\Images\Banner1.png"/>
+            <Label Canvas.Right="10" Canvas.Top="13" Content="Fight With Landlord" Foreground="#FFF2F705" FontFamily="Tempus Sans ITC" FontSize="24" FontWeight="Bold" />
+        </Canvas>
+        <DockPanel Grid.Row="1" Margin="0" >
+            <Menu Height="20" VerticalAlignment="Top" Background="Black" FontWeight="Bold" Foreground="White">
+                <MenuItem Header="_File" Foreground="White">
+                    <MenuItem Header="_New Game..." Foreground="Black" Width="200"  Command="src:GameViewModel.StartGameCommand"/>
+                    <MenuItem Header="_Open" Width="200" Foreground="Black"/>
+                    <MenuItem Header="_Save" Width="200" Foreground="Black" Command="Save">
+                        <MenuItem.Icon>
+                            <Image Source="Images\base_floppydisk_32.png" Width="20" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Width="145" Foreground="Black"/>
+                    <MenuItem Header="_Close" Width="200" Foreground="Black" Command="Close"/>
+                </MenuItem>
+                <MenuItem Header="_Game" Background="Black" Foreground="White">
+                    <MenuItem Header="_Undo" HorizontalAlignment="Left" Width="145" Foreground="Black"/>
+                </MenuItem>
+                <MenuItem Header="_Tools" Background="Black" Foreground="White">
+                    <MenuItem Header="_Options" HorizontalAlignment="Left" Width="200" Foreground="Black" Click="Option_Click"/>
+                </MenuItem>
+                <MenuItem Header="Help" Background="Black" Foreground="White">
+                    <MenuItem Header="_About" HorizontalAlignment="Left" Width="145" Foreground="Black" Click="About_Click"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <DockPanel Grid.Row="2">
+            <src:CardsInHandControl x:Name="Player2Hand" DockPanel.Dock="Right" Height="580" 
+          VerticalAlignment="Center" Width="180" PlayerOrientation="Vertical" 
+          Owner="{Binding Players[1]}" PlayerState="{Binding Players[1].State}" Game="{Binding}"/>
+            <src:CardsInHandControl x:Name="Player4Hand" DockPanel.Dock="Left" 
+          HorizontalAlignment="Left" Height="580" VerticalAlignment="Center" Width="180" 
+          PlayerOrientation="Vertical" Owner="{Binding Players[2]}" PlayerState="{Binding Players[2].State}"
+          Game="{Binding}"/>
+            <src:CardsInHandControl x:Name="Player3Hand" DockPanel.Dock="Bottom"
+          HorizontalAlignment="Center" Height="154" VerticalAlignment="Top" Width="580" 
+          PlayerOrientation="Horizontal" Owner="{Binding Players[0]}"
+          PlayerState="{Binding Players[0].State}" Game="{Binding}" />
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" FlowDirection="RightToLeft">
+                <Button Content="Pass" Height="32" Width="75"  Margin="90,0,100,0" Name="PassButton"  FontFamily="Tempus Sans ITC" FontWeight="Bold"  FontSize="16" Click="PassButton_Click" Visibility="Hidden"/>
+                <Button Content="Play" Height="32" Width="75"   Name="PlayButton"  FontFamily="Tempus Sans ITC" FontWeight="Bold" FontSize="16" Foreground="#FFF01212" Click="PlayButton_Click" Visibility="Hidden" />
+            </StackPanel>
+            <src:GameDecksControl Height="180" x:Name="GameDecks" Deck="{Binding GameDeck}" 
+          AvailableCard="{Binding CurrentAvailableCard}" CurrentPlayer="{Binding CurrentPlayer}"
+          GameStarted="{Binding GameStarted}"/>
+        </DockPanel>
+    </Grid>
+</Window>
