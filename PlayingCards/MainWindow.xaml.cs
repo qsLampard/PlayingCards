@@ -99,14 +99,17 @@ namespace PlayingCards
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            model.CurrentPlayer.play();
+            if (model.CurrentPlayer.Index==model.CurrentAvailableCardPlayer)
+                model.CurrentPlayer.play(null);
+            else
+                model.CurrentPlayer.play(model.Combination);
             //System.Media.SoundPlayer sp = new System.Media.SoundPlayer(".\\Audios\\background.wmv");//@"background.mp3"
             //sp.Play();
         }
 
         private void PassButton_Click(object sender, RoutedEventArgs e)
         {
-            model.CurrentPlayer.pass();
+            model.CurrentPlayer.pass(model.CurrentAvailableCardPlayer);
         }
     }
 }

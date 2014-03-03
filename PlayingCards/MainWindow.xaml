@@ -27,32 +27,21 @@
             <Menu Height="20" VerticalAlignment="Top" Background="Black" FontWeight="Bold" Foreground="White">
                 <MenuItem Header="_File" Foreground="White">
                     <MenuItem Header="_New Game..." Foreground="Black" Width="200"  Command="src:GameViewModel.StartGameCommand"/>
-                    <MenuItem Header="_Open" Width="200" Foreground="Black"/>
-                    <MenuItem Header="_Save" Width="200" Foreground="Black" Command="Save">
-                        <MenuItem.Icon>
-                            <Image Source="Images\base_floppydisk_32.png" Width="20" />
-                        </MenuItem.Icon>
-                    </MenuItem>
+                    <MenuItem Header="_Options" HorizontalAlignment="Left" Width="200" Foreground="Black" Click="Option_Click"/>
                     <Separator Width="145" Foreground="Black"/>
                     <MenuItem Header="_Close" Width="200" Foreground="Black" Command="Close"/>
                 </MenuItem>
-                <MenuItem Header="_Game" Background="Black" Foreground="White">
-                    <MenuItem Header="_Undo" HorizontalAlignment="Left" Width="145" Foreground="Black"/>
-                </MenuItem>
-                <MenuItem Header="_Tools" Background="Black" Foreground="White">
-                    <MenuItem Header="_Options" HorizontalAlignment="Left" Width="200" Foreground="Black" Click="Option_Click"/>
-                </MenuItem>
-                <MenuItem Header="Help" Background="Black" Foreground="White">
+                <MenuItem Header="_Help" Background="Black" Foreground="White">
                     <MenuItem Header="_About" HorizontalAlignment="Left" Width="145" Foreground="Black" Click="About_Click"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
         <DockPanel Grid.Row="2">
             <src:CardsInHandControl x:Name="Player2Hand" DockPanel.Dock="Right" Height="580" 
-          VerticalAlignment="Center" Width="180" PlayerOrientation="Vertical" 
+          VerticalAlignment="Center" Width="200" PlayerOrientation="Vertical" 
           Owner="{Binding Players[1]}" PlayerState="{Binding Players[1].State}" Game="{Binding}"/>
             <src:CardsInHandControl x:Name="Player4Hand" DockPanel.Dock="Left" 
-          HorizontalAlignment="Left" Height="580" VerticalAlignment="Center" Width="180" 
+          HorizontalAlignment="Left" Height="580" VerticalAlignment="Center" Width="200" 
           PlayerOrientation="Vertical" Owner="{Binding Players[2]}" PlayerState="{Binding Players[2].State}"
           Game="{Binding}"/>
             <src:CardsInHandControl x:Name="Player3Hand" DockPanel.Dock="Bottom"
@@ -65,7 +54,7 @@
             </StackPanel>
             <src:GameDecksControl Height="180" x:Name="GameDecks" Deck="{Binding GameDeck}" 
           AvailableCard="{Binding CurrentAvailableCard}" CurrentPlayer="{Binding CurrentPlayer}"
-          GameStarted="{Binding GameStarted}"/>
+          GameStarted="{Binding GameStarted}"  Combination="{Binding Combination}"/>
         </DockPanel>
     </Grid>
 </Window>

@@ -64,6 +64,17 @@ namespace PlayingCards
             }
         }
 
+        private kindsOfCombination _combination;
+        public kindsOfCombination Combination
+        {
+            get { return _combination; }
+            set
+            {
+                _combination = value;
+                OnPropertyChanged("CombinationChanged");
+            }
+        }
+
         private Deck _deck;
         public Deck GameDeck
         {
@@ -88,6 +99,8 @@ namespace PlayingCards
             }
         }
 
+        
+
         private GameOptions _gameOptions;
 
         public static RoutedCommand StartGameCommand = new RoutedCommand("Start New Game", typeof(GameViewModel), new InputGestureCollection(new List<InputGesture> { new KeyGesture(Key.N, ModifierKeys.Control) }));
@@ -102,16 +115,19 @@ namespace PlayingCards
 
         public void StartNewGame()
         {
+            Random rand = new Random();
+            int LandlordIndex = rand.Next(3);
             CreateGameDeck();
-            CreatePlayers();
-            InitializeGame();
+            CreatePlayers(LandlordIndex);
+            InitializeGame(LandlordIndex);
             GameStarted = true;
             
         }
 
-        private void InitializeGame()
+        private void InitializeGame(int LandlordIndex)
         {
-            AssignCurrentPlayer(0);
+
+            AssignCurrentPlayer(LandlordIndex);
             CurrentAvailableCard = new Cards();
         }
 
@@ -119,8 +135,18 @@ namespace PlayingCards
         {
             CurrentPlayer = Players[index];
             if (!Players.Any(x => x.State == PlayerState.Winner))
-                Players.ForEach(x => x.State = (x == Players[index] ? PlayerState.Active :
-        PlayerState.Inactive));
+            {
+                foreach(Player p in Players)
+                {
+                    if (p == Players[index])
+                        p.State = PlayerState.Active;
+                    else if (p.State == PlayerState.Pass)
+                        p.State = PlayerState.Pass;
+                    else
+                        p.State = PlayerState.Inactive;
+                }
+            }
+                
         }
 
         private void InitializePlayer(Player player)
@@ -140,17 +166,28 @@ namespace PlayingCards
             GameDeck.Shuffle();
         }
 
-        private void CreatePlayers()
+        private void CreatePlayers(int LandlordIndex)
         {
             Players.Clear();
-            InitializePlayer(new Player { Index = 0, PlayerName = _gameOptions.PlayerName });
-            InitializePlayer(new ComputerPlayer { Index = 1, Skill = _gameOptions.ComputerSkill });
-            InitializePlayer(new ComputerPlayer { Index = 2, Skill = _gameOptions.ComputerSkill });
+            if (LandlordIndex == 0)
+                InitializePlayer(new Player { Index = 0, Landlord = true, PlayerName = _gameOptions.PlayerName });
+            else
+                InitializePlayer(new Player { Index = 0, Landlord = false, PlayerName = _gameOptions.PlayerName });
+            if (LandlordIndex == 1)
+                InitializePlayer(new ComputerPlayer { Index = 1, Landlord = true, Skill = _gameOptions.ComputerSkill });
+            else
+                InitializePlayer(new ComputerPlayer { Index = 1, Landlord = false, Skill = _gameOptions.ComputerSkill });
+            if (LandlordIndex == 2)
+                InitializePlayer(new ComputerPlayer { Index = 2, Landlord = true, Skill = _gameOptions.ComputerSkill });
+            else
+                InitializePlayer(new ComputerPlayer { Index = 2, Landlord = false, Skill = _gameOptions.ComputerSkill });
+            //InitializePlayer(new ComputerPlayer { Index = 1, Skill = _gameOptions.ComputerSkill });
+            //InitializePlayer(new ComputerPlayer { Index = 2, Skill = _gameOptions.ComputerSkill });
         }
 
         void player_OnPlayerHasWon(object sender, PlayerEventArgs e)
         {
-            Players.ForEach(x => x.State = (x == e.Player ? PlayerState.Winner : PlayerState.Loser));
+            Players.ForEach(x => x.State = (x.Landlord == e.Player.Landlord ? PlayerState.Winner : PlayerState.Loser));
         }
 
         void player_OnCardDiscarded(object sender, CardEventArgs e)
@@ -177,8 +214,11 @@ namespace PlayingCards
             var cardsInPlay = new List<Card>();
             for (int i = 0; i < e.Cards.Count; i++)
                 CurrentAvailableCard.Add(e.Cards[i]);
-            if (e.Cards.Count>0)
-                CurrentAvailableCardPlayer = CurrentPlayer.Index;
+            if (e.Cards.Count > 0)
+            {
+                CurrentAvailableCardPlayer = e.index;
+                Combination = e.CurrentCombination;
+            }
             AssignCurrentPlayer(nextIndex);
         }
 

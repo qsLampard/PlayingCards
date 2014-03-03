@@ -66,9 +66,9 @@ namespace PlayingCards
 
         private static void OnPlayerStateChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
+            
             var control = source as CardsInHandControl;
             var computerPlayer = control.Owner as ComputerPlayer;
-
             if (computerPlayer != null)
             {
                 /*if (computerPlayer.State == PlayerState.MustDiscard)
@@ -87,7 +87,9 @@ namespace PlayingCards
                     delayedWorker.Start(new Payload
                     {
                         Deck = control.Game.GameDeck,
-                        //AvailableCard = control.Game.CurrentAvailableCard,
+                        AvailableCard = control.Game.CurrentAvailableCard,
+                        CurrentCombination=control.Game.Combination,
+                        CardPlayer=control.Game.CurrentAvailableCardPlayer,
                         Player = computerPlayer
                     });
                 }
@@ -104,8 +106,9 @@ namespace PlayingCards
         private class Payload
         {
             public Deck Deck { get; set; }
-            public Card AvailableCard { get; set; }
+            public Cards AvailableCard { get; set; }
             public kindsOfCombination CurrentCombination { get; set; }
+            public int CardPlayer { get; set; }
             public ComputerPlayer Player { get; set; }
         }
 
@@ -113,7 +116,7 @@ namespace PlayingCards
         {
             Thread.Sleep(1250);
             var data = payload as Payload;
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action<Deck, Card>(data.Player.PerformDraw), data.Deck, data.AvailableCard);
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action<kindsOfCombination, int>(data.Player.Perform), data.CurrentCombination, data.CardPlayer);
         }
 
         /*private void DelayDiscard(object payload)
@@ -141,7 +144,6 @@ namespace PlayingCards
             bool isFaceup = true;//(Owner.State != PlayerState.Inactive);
             if (Owner is ComputerPlayer)
                 isFaceup = (Owner.State == CardLib.PlayerState.Loser || Owner.State == CardLib.PlayerState.Winner);
-
             var cards = Owner.GetCards();
             var chosenCards = Owner.GetChosenCards();
             if (cards == null || cards.Count == 0)
@@ -173,10 +175,13 @@ namespace PlayingCards
 
         private void DrawPlayerName()
         {
+            PlayerNameLabel.Content = Owner.PlayerName + (Owner.Landlord ? "(Landlord)" : "");
             if (Owner.State == PlayerState.Winner || Owner.State == PlayerState.Loser)
-                PlayerNameLabel.Content = Owner.PlayerName + (Owner.State == PlayerState.Winner ? " is the WINNER" : " has LOST");
+                PlayerNameLabel.Content = PlayerNameLabel.Content + (Owner.State == PlayerState.Winner ? " WINS" : " has LOST");
+            else if(Owner.State == PlayerState.Pass)
+                PlayerNameLabel.Content = PlayerNameLabel.Content + "   PASS!";
             else
-                PlayerNameLabel.Content = Owner.PlayerName;
+                PlayerNameLabel.Content = PlayerNameLabel.Content;
             var isActivePlayer = (Owner.State == CardLib.PlayerState.Active || Owner.State == CardLib.PlayerState.MustDiscard);
             PlayerNameLabel.FontSize = isActivePlayer ? 18 : 14;
             PlayerNameLabel.Foreground = isActivePlayer ? new SolidColorBrush(Colors.Gold) : new SolidColorBrush(Colors.White);

@@ -22,7 +22,7 @@
         <Image Source="Images/icon1.png" Margin="491,10,24,74" Grid.Row="2"/>
         <StackPanel Grid.Row="2" >
             <Label Content="Fight with LandLord developed By Shuo Qiu" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="40,40,0,0" FontWeight="Bold" Foreground="#FF8B6F6F" />
-            <Label Content="Graphical User Interface developed By Shuo Qiu" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="40,40,0,0" FontWeight="Bold" Foreground="#FF8B6F6F" />
+            <Label Content="Graphical User Interface developed By Shuo Qiu and Jacob Hammer" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="40,40,0,0" FontWeight="Bold" Foreground="#FF8B6F6F" />
             <Label Content="Contact US: qsLampard@hotmail.com" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="40,40,0,0" FontWeight="Bold" Foreground="#FF8B6F6F" Focusable="True" />
             <Label Content="Personal Website: www.columbia.edu/~sq2144/" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="40,40,0,0" FontWeight="Bold" Foreground="#FF8B6F6F" Focusable="True" Cursor="IBeam" />
         </StackPanel>

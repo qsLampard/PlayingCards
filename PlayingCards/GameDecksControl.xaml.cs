@@ -67,6 +67,12 @@ namespace PlayingCards
             set { SetValue(AvailableCardProperty, value); }
         }
 
+        public kindsOfCombination Combination
+        {
+            get { return (kindsOfCombination)GetValue(CombinationProperty); }
+            set { SetValue(CombinationProperty, value); }
+        }
+
         public int AvailableCardPlayer
         {
             get { return (int)GetValue(AvailableCardPlayerProperty); }
@@ -76,6 +82,9 @@ namespace PlayingCards
         // Using a DependencyProperty as the backing store for AvailableCard.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AvailableCardProperty =
             DependencyProperty.Register("AvailableCard", typeof(Cards), typeof(GameDecksControl), new PropertyMetadata(null, new PropertyChangedCallback(OnAvailableCardChanged)));
+
+        public static readonly DependencyProperty CombinationProperty =
+            DependencyProperty.Register("Combination", typeof(kindsOfCombination), typeof(GameDecksControl), new PropertyMetadata(null, new PropertyChangedCallback(KindsOfCombinationChanged)));
 
         public static readonly DependencyProperty AvailableCardPlayerProperty =
             DependencyProperty.Register("AvailableCardPlayer", typeof(int), typeof(GameDecksControl));
@@ -115,6 +124,13 @@ namespace PlayingCards
     DependencyPropertyChangedEventArgs e)
         {
             var control = source as GameDecksControl;
+            //control.DrawDecks();
+        }
+
+        private static void KindsOfCombinationChanged(DependencyObject source,
+    DependencyPropertyChangedEventArgs e)
+        {
+            var control = source as GameDecksControl;
             control.DrawDecks();
         }
 
@@ -125,8 +141,9 @@ namespace PlayingCards
 
         private void DrawDecks()
         {
-            if (AvailableCard == null || AvailableCard.Count == 0 && (CurrentPlayer != null&&CurrentPlayer.Index != AvailableCardPlayer))   ////no change, no flush; clear when same user
+            if ((AvailableCard == null || AvailableCard.Count == 0) && (CurrentPlayer != null&&CurrentPlayer.Index != AvailableCardPlayer))   ////no change, no flush; clear when same user
                 return;
+            Console.WriteLine("Pass");
             controlCanvas.Children.Clear();
             if (CurrentPlayer == null || Deck == null || !GameStarted)
                 return;
