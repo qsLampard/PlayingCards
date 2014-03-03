@@ -67,15 +67,25 @@ namespace PlayingCards
             set { SetValue(AvailableCardProperty, value); }
         }
 
+        public int AvailableCardPlayer
+        {
+            get { return (int)GetValue(AvailableCardPlayerProperty); }
+            set { SetValue(AvailableCardPlayerProperty, value); }
+        }
+
         // Using a DependencyProperty as the backing store for AvailableCard.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AvailableCardProperty =
             DependencyProperty.Register("AvailableCard", typeof(Cards), typeof(GameDecksControl), new PropertyMetadata(null, new PropertyChangedCallback(OnAvailableCardChanged)));
 
+        public static readonly DependencyProperty AvailableCardPlayerProperty =
+            DependencyProperty.Register("AvailableCardPlayer", typeof(int), typeof(GameDecksControl));
+
+        
         private static void OnGameStarted(DependencyObject source,
     DependencyPropertyChangedEventArgs e)
         {
             var control = source as GameDecksControl;
-            control.DrawDecks();
+            control.DrawDecksInitial();
         }
 
         private static void OnPlayerChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
@@ -84,7 +94,7 @@ namespace PlayingCards
             if (control.CurrentPlayer == null)
                 return;
 
-            control.CurrentPlayer.OnCardDiscarded += control.CurrentPlayer_OnCardDiscarded;
+            //control.CurrentPlayer.OnCardDiscarded += control.CurrentPlayer_OnCardDiscarded;
             control.DrawDecks();
         }
 
@@ -98,7 +108,7 @@ namespace PlayingCards
     DependencyPropertyChangedEventArgs e)
         {
             var control = source as GameDecksControl;
-            control.DrawDecks();
+            control.DrawDecksInitial();
         }
 
         private static void OnAvailableCardChanged(DependencyObject source,
@@ -108,9 +118,14 @@ namespace PlayingCards
             control.DrawDecks();
         }
 
+        private void DrawDecksInitial()
+        {
+            controlCanvas.Children.Clear();
+        }
+
         private void DrawDecks()
         {
-            if (AvailableCard == null || AvailableCard.Count == 0)   ////no change, no flush
+            if (AvailableCard == null || AvailableCard.Count == 0 && (CurrentPlayer != null&&CurrentPlayer.Index != AvailableCardPlayer))   ////no change, no flush; clear when same user
                 return;
             controlCanvas.Children.Clear();
             if (CurrentPlayer == null || Deck == null || !GameStarted)

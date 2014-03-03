@@ -24,6 +24,7 @@ namespace PlayingCards
         public MainWindow()
         {
             InitializeComponent();
+            
             //var position = new Point(15, 15);
             //for (var i = 0; i < 4; i++)
             //{
@@ -99,6 +100,8 @@ namespace PlayingCards
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             model.CurrentPlayer.play();
+            //System.Media.SoundPlayer sp = new System.Media.SoundPlayer(".\\Audios\\background.wmv");//@"background.mp3"
+            //sp.Play();
         }
 
         private void PassButton_Click(object sender, RoutedEventArgs e)

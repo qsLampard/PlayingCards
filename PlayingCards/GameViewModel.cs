@@ -52,6 +52,18 @@ namespace PlayingCards
             }
         }
 
+        private int _availableCardPlayer;
+        public int CurrentAvailableCardPlayer
+        {
+            get { return _availableCardPlayer; }
+            set
+            {
+                _availableCardPlayer = value;
+                OnPropertyChanged("CurrentAvailableCardPlayer");
+
+            }
+        }
+
         private Deck _deck;
         public Deck GameDeck
         {
@@ -85,6 +97,7 @@ namespace PlayingCards
         {
             _players = new List<Player>();
             this._gameOptions = GameOptions.Create();
+            
         }
 
         public void StartNewGame()
@@ -93,6 +106,7 @@ namespace PlayingCards
             CreatePlayers();
             InitializeGame();
             GameStarted = true;
+            
         }
 
         private void InitializeGame()
@@ -112,7 +126,7 @@ namespace PlayingCards
         private void InitializePlayer(Player player)
         {
             player.DrawNewHand(GameDeck);
-            player.OnCardDiscarded += player_OnCardDiscarded;
+            //player.OnCardDiscarded += player_OnCardDiscarded;
             player.OnPlayerHasWon += player_OnPlayerHasWon;
             player.OnCardPlayed += player_OnCardPlayed;
             Players.Add(player);
@@ -163,6 +177,8 @@ namespace PlayingCards
             var cardsInPlay = new List<Card>();
             for (int i = 0; i < e.Cards.Count; i++)
                 CurrentAvailableCard.Add(e.Cards[i]);
+            if (e.Cards.Count>0)
+                CurrentAvailableCardPlayer = CurrentPlayer.Index;
             AssignCurrentPlayer(nextIndex);
         }
 

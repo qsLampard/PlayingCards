@@ -71,7 +71,7 @@ namespace PlayingCards
 
             if (computerPlayer != null)
             {
-                if (computerPlayer.State == PlayerState.MustDiscard)
+                /*if (computerPlayer.State == PlayerState.MustDiscard)
                 {
                     Thread delayedWorker = new Thread(control.DelayDiscard);
                     delayedWorker.Start(new Payload
@@ -81,7 +81,7 @@ namespace PlayingCards
                         Player = computerPlayer
                     });
                 }
-                else if (computerPlayer.State == PlayerState.Active)
+                else */if (computerPlayer.State == PlayerState.Active)
                 {
                     Thread delayedWorker = new Thread(control.DelayDraw);
                     delayedWorker.Start(new Payload
@@ -105,6 +105,7 @@ namespace PlayingCards
         {
             public Deck Deck { get; set; }
             public Card AvailableCard { get; set; }
+            public kindsOfCombination CurrentCombination { get; set; }
             public ComputerPlayer Player { get; set; }
         }
 
@@ -115,12 +116,12 @@ namespace PlayingCards
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<Deck, Card>(data.Player.PerformDraw), data.Deck, data.AvailableCard);
         }
 
-        private void DelayDiscard(object payload)
+        /*private void DelayDiscard(object payload)
         {
             Thread.Sleep(1250);
             var data = payload as Payload;
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<Deck>(data.Player.PerformDiscard), data.Deck);
-        }
+        }*/
 
         private void RedrawCards()
         {
@@ -163,7 +164,7 @@ namespace PlayingCards
                     else
                         cardControl.Margin = new Thickness(5, 35 + i * 30, 0, 0);
                 }
-                cardControl.MouseDoubleClick += cardControl_MouseDoubleClick;
+                //cardControl.MouseDoubleClick += cardControl_MouseDoubleClick;
                 cardControl.MouseLeftButtonDown += cardControl_Click;
                 cardControl.IsFaceUp = isFaceup;
                 CardSurface.Children.Add(cardControl);
@@ -181,6 +182,7 @@ namespace PlayingCards
             PlayerNameLabel.Foreground = isActivePlayer ? new SolidColorBrush(Colors.Gold) : new SolidColorBrush(Colors.White);
         }
 
+        /*
         private void cardControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selectedCard = sender as CardControl;
@@ -189,7 +191,7 @@ namespace PlayingCards
             if (Owner.State == PlayerState.MustDiscard)
                 Owner.DiscardCard(selectedCard.Card);
             RedrawCards();
-        }
+        }*/
 
         private void cardControl_Click(object sender, MouseButtonEventArgs e)
         {
